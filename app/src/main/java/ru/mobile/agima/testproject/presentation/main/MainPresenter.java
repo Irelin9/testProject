@@ -1,6 +1,5 @@
 package ru.mobile.agima.testproject.presentation.main;
 
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.view.ViewPager;
 
@@ -12,11 +11,12 @@ import java.util.List;
 
 import ru.mobile.agima.testproject.App;
 import ru.mobile.agima.testproject.R;
+import ru.mobile.agima.testproject.domain.GalleryItem;
 
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
-    private static final int default_res = -1;
-    private static final double screen_centre = 0.5;
+    private static final int DEFAULT_RES = -1;
+    private static final double SCREEN_CENTRE = 0.5;
 
     private GalleryAdapter adapter;
 
@@ -27,12 +27,11 @@ public class MainPresenter extends MvpPresenter<MainView> {
     }
 
     private void loadGallery() {
-        getViewState().onGalleryLoaded(getGalleryItemsFromResources());
-    }
-
-    public GalleryAdapter onSetAdapter(List<GalleryItem> items, Context context) {
-        adapter = new GalleryAdapter(items, context);
-        return adapter;
+        final List<GalleryItem> items = getGalleryItemsFromResources();
+        if (adapter == null) {
+            adapter = new GalleryAdapter(items, App.getContext());
+        }
+        getViewState().updateGallery(adapter);
     }
 
     public ViewPager.OnPageChangeListener onPageChangeListener() {
@@ -56,20 +55,20 @@ public class MainPresenter extends MvpPresenter<MainView> {
     }
 
     private float calculateAlpha(float positionOffset) {
-        return (float) (2 * Math.abs(positionOffset - screen_centre));
+        return (float) (2 * Math.abs(positionOffset - SCREEN_CENTRE));
     }
 
     private String calculateTitle(float positionOffset, int position) {
-        return adapter.getItemTitle(positionOffset > screen_centre
+        return adapter.getItemTitle(positionOffset > SCREEN_CENTRE
                 ? position + 1 : position);
     }
 
     private List<GalleryItem> getGalleryItemsFromResources() {
-        List<GalleryItem> items = new ArrayList<>();
-        TypedArray images = App.getContext().getResources().obtainTypedArray(R.array.gallery_res);
-        TypedArray titles = App.getContext().getResources().obtainTypedArray(R.array.gallery_titles);
+        final List<GalleryItem> items = new ArrayList<>();
+        final TypedArray images = App.getContext().getResources().obtainTypedArray(R.array.gallery_res);
+        final TypedArray titles = App.getContext().getResources().obtainTypedArray(R.array.gallery_titles);
         for (int i = 0; i < images.length(); i++) {
-            items.add(new GalleryItem(images.getResourceId(i, default_res), titles.getString(i)));
+            items.add(new GalleryItem(images.getResourceId(i, DEFAULT_RES), titles.getString(i)));
         }
         return items;
     }

@@ -38,10 +38,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
-    public void onGalleryLoaded(List<GalleryItem> items) {
-        galleryPager.setAdapter(presenter.onSetAdapter(items, this));
-        galleryPager.getAdapter().notifyDataSetChanged();
-        indicator.setCount(items.size());
+    public void updateGallery(GalleryAdapter adapter) {
+        galleryPager.setAdapter(adapter);
+        indicator.setCount(adapter.getCount());
     }
 
     @Override

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.mobile.agima.testproject.R;
+import ru.mobile.agima.testproject.domain.GalleryItem;
 
 public class GalleryAdapter extends PagerAdapter {
     private List<GalleryItem> items = new ArrayList<>();
@@ -25,7 +26,7 @@ public class GalleryAdapter extends PagerAdapter {
     }
 
     public String getItemTitle(int position) {
-        return items.get(position).getText();
+        return items.get(position).text;
     }
 
     @Override
@@ -42,14 +43,14 @@ public class GalleryAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View item = inflater.inflate(R.layout.gallery_item, container, false);
-        loadImage((ImageView)item.findViewById(R.id.image), items.get(position));
+        loadImage((ImageView)item, items.get(position));
         container.addView(item);
         return item;
     }
 
     private void loadImage(ImageView imageView, GalleryItem item) {
         Glide.with(context)
-                .load(item.getImageRes())
+                .load(item.imageRes)
                 .centerCrop()
                 .into(imageView);
     }
