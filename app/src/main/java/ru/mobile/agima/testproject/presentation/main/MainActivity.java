@@ -34,12 +34,12 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        galleryPager.addOnPageChangeListener(presenter.onPageChangeListener());
     }
 
     @Override
-    public void updateGallery(GalleryAdapter adapter) {
+    public void updateGallery(GalleryAdapter adapter, ViewPager.OnPageChangeListener pagerListener) {
         galleryPager.setAdapter(adapter);
+        galleryPager.addOnPageChangeListener(pagerListener);
         indicator.setCount(adapter.getCount());
     }
 

@@ -31,10 +31,10 @@ public class MainPresenter extends MvpPresenter<MainView> {
         if (adapter == null) {
             adapter = new GalleryAdapter(items, App.getContext());
         }
-        getViewState().updateGallery(adapter);
+        getViewState().updateGallery(adapter, getOnPageChangeListener());
     }
 
-    public ViewPager.OnPageChangeListener onPageChangeListener() {
+    private ViewPager.OnPageChangeListener getOnPageChangeListener() {
         return new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
